@@ -6,13 +6,14 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:17:54 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 10:40:52 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:31:49 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 #include <sys/time.h> 
-#include <stdio.h>    
+#include <stdio.h>
+#include <unistd.h>
 
 long    gettime(int time_code)
 {
@@ -25,4 +26,14 @@ long    gettime(int time_code)
 	else if (MICROSECOND == time_code)
 		return (tv.tv_sec * 1e6 + tv.tv_usec);
     return (69);
+}
+
+int ft_sleep(long time)
+{
+    long start_time;
+
+    start_time = gettime(MICROSECOND);
+    while (gettime(MICROSECOND) - start_time < time)
+        usleep(100);
+    return (0);
 }

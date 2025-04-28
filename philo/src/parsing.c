@@ -6,10 +6,11 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:36:56 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 10:54:29 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:55:41 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../inc/philosophers.h"
 #include <limits.h>
 #include <stdio.h>
 #include <stdbool.h>

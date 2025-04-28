@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 10:54:39 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:01:14 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,22 @@ typedef struct s_philo
     
     bool is_eating;
     bool is_dead;
+    bool is_full;
     
     t_fork *forklock_r;
     t_fork *forklock_l;
     pthread_mutex_t *lock_eat;
     pthread_mutex_t *lock_dead;
     pthread_mutex_t *lock_print;
+
+    pthread_t thread;
 } t_philo;
 
 
 struct s_main {
     
     t_philo *philos;
+    t_fork *forks;
     
     int nb_philo;
     int nb_eat;
@@ -74,16 +78,34 @@ struct s_main {
     pthread_mutex_t lock_eat;
     pthread_mutex_t lock_dead;
     pthread_mutex_t lock_print;
+
+    pthread_t monitor_thread;
     
 };
 
 bool parsing(int ac, char **av);
-long strtolong(char *str);
 bool is_nbr(char *str);
-long gettime(int time_code);
 bool is_dead(t_philo *philo);
 bool is_full(t_philo *philo);
+bool init_main_struct(struct s_main *main, int ac, char **av);
+bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main);
+bool mutex_init(t_philo *philo);
+bool init_forks(struct s_main *main);
+bool start_dinner(struct s_main *main);
+
+long gettime(int time_code);
+long strtolong(char *str);
+
+
 int ft_sleep(long time);
-int mutex_init(t_philo *philo);
+
+void eat(t_philo *philo);
+void philo_sleep(t_philo *philo);
+void think(t_philo *philo);
+void kill_mutexes(struct s_main *main);
+void printfilo(int status, t_philo *philo);
+
+void *monitor(void *main_ptr);
+void *main_loop(void *philo);
 
 #endif

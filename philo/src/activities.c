@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 10:47:15 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:06:51 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,15 @@ void eat(t_philo *philo)
     ft_sleep(philo->start_time + philo->time_to_eat);
     pthread_mutex_unlock(philo->forklock_l->mutex);
     pthread_mutex_unlock(philo->forklock_r->mutex);
+}
+
+void philo_sleep(t_philo *philo)
+{
+    printfilo(SLEEPING, philo);
+    ft_sleep(philo->start_time + philo->time_to_sleep);
+}
+
+void think(t_philo *philo)
+{
+    printfilo(THINKING, philo);
 }

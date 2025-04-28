@@ -23,6 +23,15 @@ OBJ_DIR				= $(SRC_DIR).build/
 #____________FILES
 ALL_SRC				= main.c \
 					parsing.c \
+					activities.c \
+					init.c \
+					loop.c \
+					main.c \
+					monitor.c \
+					parsing.c \
+					time.c \
+					utils.c \
+
 
 PREFIX_SRC			= $(addprefix $(SRC_DIR), $(ALL_SRC))
 
