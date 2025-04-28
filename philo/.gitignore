@@ -1,0 +1,4 @@
+philo
+*.o
+*.d
+./src/.build
