@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 17:06:51 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:40:20 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	printfilo(int status, t_philo *philo)
 
 	pthread_mutex_lock(philo->lock_print);
 	time = gettime(MILLISECOND) - philo->start_time;
-	if (!is_dead(philo) || is_full(philo))
+	if (!is_dead(philo))
 	{
         if (status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK)
             printf("%-6ld"" %d has taken a fork\n", time, philo->id);
@@ -36,26 +36,37 @@ void	printfilo(int status, t_philo *philo)
 	pthread_mutex_unlock(philo->lock_print);
 }
 
+
 void eat(t_philo *philo)
 {
-    pthread_mutex_lock(philo->forklock_r->mutex);
-    printfilo(TAKE_FIRST_FORK, philo);
-    pthread_mutex_lock(philo->forklock_l->mutex);
-    printfilo(TAKE_SECOND_FORK, philo);
-    pthread_mutex_lock(philo->lock_eat);
-    philo->last_eat_time = gettime(MICROSECOND);
-    philo->is_eating = true;
-    pthread_mutex_unlock(philo->lock_eat);
+    if (philo->fork_l->id < philo->fork_r->id)
+    {
+        pthread_mutex_lock(&philo->fork_l->mutex);
+        printfilo(TAKE_FIRST_FORK, philo);
+        pthread_mutex_lock(&philo->fork_r->mutex);
+        printfilo(TAKE_SECOND_FORK, philo);
+    }
+    else
+    {
+        pthread_mutex_lock(&philo->fork_r->mutex);
+        printfilo(TAKE_FIRST_FORK, philo);
+        pthread_mutex_lock(&philo->fork_l->mutex);
+        printfilo(TAKE_SECOND_FORK, philo);
+    }
     printfilo(EATING, philo);
-    ft_sleep(philo->start_time + philo->time_to_eat);
-    pthread_mutex_unlock(philo->forklock_l->mutex);
-    pthread_mutex_unlock(philo->forklock_r->mutex);
+    pthread_mutex_lock(philo->lock_eat);
+    philo->last_eat_time = gettime(MILLISECOND);
+    philo->eat_count++;
+    pthread_mutex_unlock(philo->lock_eat);
+    ft_sleep(philo->time_to_eat);
+    pthread_mutex_unlock(&philo->fork_r->mutex);
+    pthread_mutex_unlock(&philo->fork_l->mutex);
 }
 
 void philo_sleep(t_philo *philo)
 {
     printfilo(SLEEPING, philo);
-    ft_sleep(philo->start_time + philo->time_to_sleep);
+    ft_sleep( philo->time_to_sleep);
 }
 
 void think(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:32:34 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 17:56:16 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:19:16 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,45 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+void printdebug(struct s_main *main)
+{
+    printf("Philosophers and forks initialized successfully\n");
+    printf("Philosophers:\n");
+    for (int i = 0; i < main->nb_philo; i++)
+    {
+        printf("Philosopher %d:\n", main->philos[i].id);
+        printf("  - eat_count: %d\n", main->philos[i].eat_count);
+        printf("  - last_eat_time: %ld\n", main->philos[i].last_eat_time);
+        printf("  - start_time: %ld\n", main->philos[i].start_time);
+        printf("  - left_fork: %d\n", main->philos[i].fork_l->id);
+        printf("  - right_fork: %d\n", main->philos[i].fork_r->id);
+        printf("  - time_to_die: %d ms\n", main->philos[i].time_to_die);
+        printf("  - time_to_eat: %d ms\n", main->philos[i].time_to_eat);
+        printf("  - time_to_sleep: %d ms\n", main->philos[i].time_to_sleep);
+        printf("  - is_dead: %d\n", *main->philos[i].is_dead);
+        printf("  - is_full: %d\n", main->philos[i].is_full);
+        printf("  - is_eating: %d\n", main->philos[i].is_eating);
+        printf("  - must_eat_count: %d\n", main->philos[i].must_eat_count);
+    }
+    printf("Forks:\n");
+    for (int i = 0; i < main->nb_philo; i++)
+    {
+        printf("Fork %d: id = %d\n", i + 1, main->forks[i].id);
+    }
+}
 
 bool init_everything(struct s_main *main, int ac, char **av)
 {
-    if (init_main_struct(main, ac, av) || 
-        init_forks(main) != 0 ||
-        init_philosophers(main->philos, main->forks, main))
-        return (true); 
-    return false;
+    if (!init_main_struct(main, ac, av) || 
+        !init_forks(main) ||
+        !init_philosophers(main->philos, main->forks, main) ||
+        !init_parsing(main, ac, av))
+        return (false);
+    if (DEBUG)
+        printdebug(main);
+    return true;
 }
+
 
 int main(int ac, char **av)
 {
@@ -45,14 +75,16 @@ int main(int ac, char **av)
     }
     main.philos = philos;
     main.forks = forks;
-    if (init_everything( &main, ac, av))
-    {
-        printf("Error during the init\n");
+    if (!init_everything( &main, ac, av))
         return 1;
-    }
-    if (start_dinner(&main))
+    if (!start_dinner(&main))
     {
         printf("Error during the simulation\n");
         return 1;
     }
 }
+
+
+// TODO : handle single philo
+// TODO : Handle 000 as input
+// TODO : Thread destruction

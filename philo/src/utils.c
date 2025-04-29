@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:35:47 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 18:01:01 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:37:45 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool is_dead(t_philo *philo)
 {
     pthread_mutex_lock(philo->lock_dead);
-    if (philo->is_dead)
+    if (*philo->is_dead)
     {
         pthread_mutex_unlock(philo->lock_dead);
         return (true);
@@ -26,8 +26,10 @@ bool is_dead(t_philo *philo)
 
 bool is_full(t_philo *philo)
 {
+    if (philo->must_eat_count == -1)
+        return (false);
     pthread_mutex_lock(philo->lock_eat);
-    if (philo->eat_count >= philo->must_eat_count)
+    if (philo->is_full)
     {
         pthread_mutex_unlock(philo->lock_eat);
         return (true);
@@ -43,8 +45,21 @@ void kill_mutexes(struct s_main *main)
 
     i = -1;
     while (++i < main->nb_philo)
-        pthread_mutex_destroy(main->forks[i].mutex);
+        pthread_mutex_destroy(&main->forks[i].mutex);
     pthread_mutex_destroy(&main->lock_eat);
     pthread_mutex_destroy(&main->lock_dead);
     pthread_mutex_destroy(&main->lock_print);
+}
+
+void* one_philo(void *philo_ptr)
+{
+    t_philo *philo;
+    philo = (t_philo *)philo_ptr;
+    
+    pthread_mutex_lock(&philo->fork_l->mutex);
+    printfilo(TAKE_FIRST_FORK, philo);
+    ft_sleep(philo->time_to_die);
+    printfilo(DIED, philo);
+    pthread_mutex_unlock(&philo->fork_l->mutex);
+    return (NULL);
 }

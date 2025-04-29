@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:17:54 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 17:31:49 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:31:27 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int ft_sleep(long time)
 {
     long start_time;
 
-    start_time = gettime(MICROSECOND);
-    while (gettime(MICROSECOND) - start_time < time)
+    start_time = gettime(MILLISECOND);
+    while (gettime(MILLISECOND) - start_time < time)
         usleep(100);
     return (0);
 }

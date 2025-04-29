@@ -6,11 +6,59 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:16:48 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 17:31:16 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:39:26 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+#include <stdio.h>
+
+
+bool check_death_time(t_philo *philo)
+{    
+    pthread_mutex_lock(philo->lock_eat);
+    if (gettime(MILLISECOND) - philo->last_eat_time > philo->time_to_die)
+    {
+        printfilo(DIED, philo);
+        pthread_mutex_unlock(philo->lock_eat);
+        pthread_mutex_lock(philo->lock_dead);
+        *philo->is_dead = true;
+        pthread_mutex_unlock(philo->lock_dead);
+        return false;
+    }
+    pthread_mutex_unlock(philo->lock_eat);
+    return true;
+}
+
+
+bool check_philo_full(t_philo *philo, struct s_main *main)
+{
+    bool is_full;
+    bool all_full;
+
+    pthread_mutex_lock(philo->lock_eat);
+    if (philo->eat_count >= philo->must_eat_count && !philo->is_full)
+    {
+        philo->is_full = true;
+        is_full = true;
+    }
+    pthread_mutex_unlock(philo->lock_eat);
+    if (is_full)
+    {
+        pthread_mutex_lock(&main->lock_dead);
+        main->nb_eat++;
+        all_full = (main->nb_eat == main->nb_philo);
+        pthread_mutex_unlock(&main->lock_dead);
+        if (all_full)
+        {
+            pthread_mutex_lock(philo->lock_dead);
+            *philo->is_dead = true;
+            pthread_mutex_unlock(philo->lock_dead);
+            return false;
+        }
+    }
+    return true;
+}
 
 
 void *monitor(void *main_ptr)
@@ -21,15 +69,17 @@ void *monitor(void *main_ptr)
     int i;
 
     i = 0;
-    while (1)
+    while (main->nb_philo > 1)
     {
         while (i < main->nb_philo)
         {
             philo = &main->philos[i];
-            if (is_dead(philo) || is_full(philo))
+            if (!check_death_time(philo))
+                return (NULL);
+            if (philo->must_eat_count != -1)
             {
-                main->exit = true;
-                return NULL;
+                if (!check_philo_full(philo, main))
+                    return (NULL);
             }
             i++;
         }

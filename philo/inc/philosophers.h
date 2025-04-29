@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 18:01:14 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:22:35 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdbool.h>
 #include <pthread.h>
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 enum e_time
 {
@@ -36,7 +40,7 @@ enum e_log
 typedef struct s_fork
 {
     int id;
-    pthread_mutex_t *mutex;
+    pthread_mutex_t mutex;
 } t_fork;
 
 typedef struct s_philo
@@ -52,11 +56,11 @@ typedef struct s_philo
     long start_time;
     
     bool is_eating;
-    bool is_dead;
+    bool *is_dead;
     bool is_full;
     
-    t_fork *forklock_r;
-    t_fork *forklock_l;
+    t_fork *fork_r;
+    t_fork *fork_l;
     pthread_mutex_t *lock_eat;
     pthread_mutex_t *lock_dead;
     pthread_mutex_t *lock_print;
@@ -73,8 +77,11 @@ struct s_main {
     int nb_philo;
     int nb_eat;
     
+    long start_time;
+
     bool exit;
     
+    pthread_mutex_t lock_nb_eat;
     pthread_mutex_t lock_eat;
     pthread_mutex_t lock_dead;
     pthread_mutex_t lock_print;
@@ -92,6 +99,7 @@ bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main);
 bool mutex_init(t_philo *philo);
 bool init_forks(struct s_main *main);
 bool start_dinner(struct s_main *main);
+bool init_parsing(struct s_main *main, int ac, char **av);
 
 long gettime(int time_code);
 long strtolong(char *str);
@@ -104,7 +112,9 @@ void philo_sleep(t_philo *philo);
 void think(t_philo *philo);
 void kill_mutexes(struct s_main *main);
 void printfilo(int status, t_philo *philo);
+void exit_if_all_full(struct s_main *main, int finished_eating);
 
+void* one_philo(void *philo_ptr);
 void *monitor(void *main_ptr);
 void *main_loop(void *philo);
 

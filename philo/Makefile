@@ -26,9 +26,7 @@ ALL_SRC				= main.c \
 					activities.c \
 					init.c \
 					loop.c \
-					main.c \
 					monitor.c \
-					parsing.c \
 					time.c \
 					utils.c \
 
@@ -77,4 +75,13 @@ fclean : clean
 	rm -f $(NAME)
 	$(LOG__SUCCESS)
 
+
+debug: CFLAGS += -D DEBUG=1 -g -fsanitize=thread
+debug: re
+		$(call logs, $(GREEN),"Debug mode enabled")
+
+
 re : fclean all
+
+
+.PHONY : all clean fclean re
