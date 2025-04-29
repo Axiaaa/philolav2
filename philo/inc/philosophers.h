@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 17:22:35 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:03:55 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
+
+# define PHILO_MAX 200
 
 enum e_time
 {
@@ -35,7 +37,6 @@ enum e_log
     THINKING,
     DIED
 };
-
 
 typedef struct s_fork
 {
@@ -90,31 +91,30 @@ struct s_main {
     
 };
 
-bool parsing(int ac, char **av);
 bool is_nbr(char *str);
 bool is_dead(t_philo *philo);
 bool is_full(t_philo *philo);
 bool init_main_struct(struct s_main *main, int ac, char **av);
 bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main);
-bool mutex_init(t_philo *philo);
 bool init_forks(struct s_main *main);
-bool start_dinner(struct s_main *main);
 bool init_parsing(struct s_main *main, int ac, char **av);
+bool mutex_init(t_philo *philo);
+bool parsing(int ac, char **av);
+bool start_dinner(struct s_main *main);
 
 long gettime(int time_code);
 long strtolong(char *str);
 
-
 int ft_sleep(long time);
 
 void eat(t_philo *philo);
-void philo_sleep(t_philo *philo);
-void think(t_philo *philo);
-void kill_mutexes(struct s_main *main);
-void printfilo(int status, t_philo *philo);
 void exit_if_all_full(struct s_main *main, int finished_eating);
+void kill_mutexes(struct s_main *main);
+void philo_sleep(t_philo *philo);
+void printfilo(int status, t_philo *philo);
+void think(t_philo *philo);
 
-void* one_philo(void *philo_ptr);
+void *one_philo(void *philo_ptr);
 void *monitor(void *main_ptr);
 void *main_loop(void *philo);
 

@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:32:34 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 12:19:16 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:03:47 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ bool init_everything(struct s_main *main, int ac, char **av)
 int main(int ac, char **av)
 {
     struct s_main main;
-    t_philo philos[200];
-    t_fork forks[200];
+    t_philo philos[PHILO_MAX];
+    t_fork forks[PHILO_MAX];
 
     if (ac < 5 || ac > 6)
     {
@@ -79,12 +79,12 @@ int main(int ac, char **av)
         return 1;
     if (!start_dinner(&main))
     {
-        printf("Error during the simulation\n");
+        kill_mutexes(&main);
+        printf("Error while starting the dinner !\n");
         return 1;
     }
+    return 0;
 }
 
 
-// TODO : handle single philo
 // TODO : Handle 000 as input
-// TODO : Thread destruction

@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:36:56 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/28 17:55:41 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:04:13 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ bool parsing(int ac, char **av)
 
     i = 1;
 
+    if (strtolong(av[1]) > PHILO_MAX)
+    {
+        printf("We said no more than %d philos !\n", PHILO_MAX);
+        return (false);
+    }
     while (i < ac)
     {
         if (!is_nbr(av[i]))

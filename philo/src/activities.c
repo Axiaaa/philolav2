@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 19:41:28 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:43:38 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	printfilo(int status, t_philo *philo)
  * last eat time, increments the eat count, and sleeps for the time to eat.
  * 
  * @note The current implementation produces a warning with 
- * -fsanitize=thread even though I wasn't able to create any deadlock.
+ * -fsanitize=thread even though no deadlock occurs at all.
  * An alternative implementation that avoids the warning (but is slower)
  * would lock forks in different orders based on philosopher IDs.
  * This alternative would cause the program to fail tests like :
