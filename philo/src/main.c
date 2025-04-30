@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:32:34 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 20:03:47 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:28:32 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,3 @@ int main(int ac, char **av)
     }
     return 0;
 }
-
-
-// TODO : Handle 000 as input

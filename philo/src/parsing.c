@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:36:56 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 20:04:13 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:28:18 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ bool parsing(int ac, char **av)
             printf("You should only input numbers\n");
             return (false);
         }
-        if (strtolong(av[i]) >= INT_MAX || strtolong(av[i]) < 0)
+        if (strtolong(av[i]) >= INT_MAX || strtolong(av[i]) <= 0)
         {
-            printf("The numbers shouldn't be greater than INT_MAX or inferior to 0\n");
+            printf("The numbers shouldn't be greater than INT_MAX nor inferior to 1\n");
             return (false);
         }
         i++;
