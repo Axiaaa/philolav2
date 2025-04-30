@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:35:47 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:22:45 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:40:56 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@ bool is_dead(t_philo *philo)
         return (true);
     }
     pthread_mutex_unlock(philo->lock_dead);
-    return (false);
-}
-
-bool is_full(t_philo *philo)
-{
-    if (philo->must_eat_count == -1)
-        return (false);
-    pthread_mutex_lock(philo->lock_eat);
-    if (philo->is_full)
-    {
-        pthread_mutex_unlock(philo->lock_eat);
-        return (true);
-    }
-    pthread_mutex_unlock(philo->lock_eat);
     return (false);
 }
 

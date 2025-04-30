@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:18:19 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:40:53 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ struct s_main {
 
 bool is_nbr(char *str);
 bool is_dead(t_philo *philo);
-bool is_full(t_philo *philo);
 bool init_main_struct(struct s_main *main, int ac, char **av);
 bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main);
 bool init_forks(struct s_main *main);
