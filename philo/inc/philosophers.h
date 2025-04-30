@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 20:03:55 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:18:19 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ bool mutex_init(t_philo *philo);
 bool parsing(int ac, char **av);
 bool start_dinner(struct s_main *main);
 
-long gettime(int time_code);
-long strtolong(char *str);
+long    gettime(int time_code, t_philo *philo);
+long    strtolong(char *str);
 
-int ft_sleep(long time);
+void	ft_sleep(long time, t_philo *philo);
 
 void eat(t_philo *philo);
 void exit_if_all_full(struct s_main *main, int finished_eating);
@@ -113,6 +113,7 @@ void kill_mutexes(struct s_main *main);
 void philo_sleep(t_philo *philo);
 void printfilo(int status, t_philo *philo);
 void think(t_philo *philo);
+void set_dead(t_philo *philo);
 
 void *one_philo(void *philo_ptr);
 void *monitor(void *main_ptr);

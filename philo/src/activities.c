@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 19:43:38 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:19:55 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	printfilo(int status, t_philo *philo)
 	size_t	time;
 
 	pthread_mutex_lock(philo->lock_print);
-	time = gettime(MILLISECOND) - philo->start_time;
+	time = gettime(MILLISECOND, philo) - philo->start_time;
 	if (!is_dead(philo))
 	{
 		if (status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK)
@@ -62,7 +62,8 @@ void	printfilo(int status, t_philo *philo)
  * An alternative implementation that avoids the warning (but is slower)
  * would lock forks in different orders based on philosopher IDs.
  * This alternative would cause the program to fail tests like :
- * "./philo 3 1000 333 333" or "./philo 5 610 200 200".
+ * "./philo 3 1000 333 333" or "./philo 5 610 200 200"
+ * since it has to wait for the other philosopher to finish eating.
  *
  * @code
  * if (philo->id % 2 == 0)
@@ -91,10 +92,10 @@ void	eat(t_philo *philo)
 	printfilo(TAKE_SECOND_FORK, philo);
 	printfilo(EATING, philo);
 	pthread_mutex_lock(philo->lock_eat);
-	philo->last_eat_time = gettime(MILLISECOND);
+	philo->last_eat_time = gettime(MILLISECOND, philo);
 	philo->eat_count++;
 	pthread_mutex_unlock(philo->lock_eat);
-	ft_sleep(philo->time_to_eat);
+	ft_sleep(philo->time_to_eat, philo);
 	pthread_mutex_unlock(&philo->fork_l->mutex);
 	pthread_mutex_unlock(&philo->fork_r->mutex);
 }
@@ -112,7 +113,7 @@ void	eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	printfilo(SLEEPING, philo);
-	ft_sleep(philo->time_to_sleep);
+	ft_sleep(philo->time_to_sleep, philo);
 }
 
 /**

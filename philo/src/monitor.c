@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:16:48 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 18:39:26 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:17:44 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 bool check_death_time(t_philo *philo)
 {    
     pthread_mutex_lock(philo->lock_eat);
-    if (gettime(MILLISECOND) - philo->last_eat_time > philo->time_to_die)
+    if (gettime(MILLISECOND, philo) - philo->last_eat_time > philo->time_to_die)
     {
         printfilo(DIED, philo);
         pthread_mutex_unlock(philo->lock_eat);

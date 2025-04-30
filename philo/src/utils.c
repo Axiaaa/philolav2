@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:35:47 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 19:58:08 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:22:45 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,15 @@ void* one_philo(void *philo_ptr)
     
     pthread_mutex_lock(&philo->fork_l->mutex);
     printfilo(TAKE_FIRST_FORK, philo);
-    ft_sleep(philo->time_to_die);
+    ft_sleep(philo->time_to_die, philo);
     printfilo(DIED, philo);
     pthread_mutex_unlock(&philo->fork_l->mutex);
     return (NULL);
+}
+
+void set_dead(t_philo *philo)
+{
+    pthread_mutex_lock(philo->lock_dead);
+    *philo->is_dead = true;
+    pthread_mutex_unlock(philo->lock_dead);
 }

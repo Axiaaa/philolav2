@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:48:05 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/29 18:02:26 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:18:55 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ bool init_main_struct(struct s_main *main, int ac, char **av)
     main->nb_philo = strtolong(av[1]);
     main->nb_eat = 0;
     main->exit = false;
-    main->start_time = gettime(MILLISECOND);
+    main->start_time = gettime(MILLISECOND, NULL);
+    if (main->start_time == -1)
+        return false;
     if (pthread_mutex_init(&main->lock_dead, NULL) != 0 ||
         pthread_mutex_init(&main->lock_print, NULL) != 0 ||
         pthread_mutex_init(&main->lock_eat, NULL) != 0)
