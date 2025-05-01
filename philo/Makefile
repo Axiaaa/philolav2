@@ -76,7 +76,7 @@ fclean : clean
 	$(LOG__SUCCESS)
 
 
-debug: CFLAGS += -D DEBUG=1 -g -fsanitize=thread
+debug: CFLAGS += -D DEBUG=1 -g3 -fsanitize=thread
 debug: re
 		$(call logs, $(GREEN),"Debug mode enabled")
 

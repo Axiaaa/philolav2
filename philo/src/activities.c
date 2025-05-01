@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:19:55 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:32:11 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	printfilo(int status, t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork_r->mutex);
-	printfilo(TAKE_FIRST_FORK, philo);
 	pthread_mutex_lock(&philo->fork_l->mutex);
+	printfilo(TAKE_FIRST_FORK, philo);
+	pthread_mutex_lock(&philo->fork_r->mutex);
 	printfilo(TAKE_SECOND_FORK, philo);
 	printfilo(EATING, philo);
 	pthread_mutex_lock(philo->lock_eat);
@@ -96,8 +96,8 @@ void	eat(t_philo *philo)
 	philo->eat_count++;
 	pthread_mutex_unlock(philo->lock_eat);
 	ft_sleep(philo->time_to_eat, philo);
-	pthread_mutex_unlock(&philo->fork_l->mutex);
 	pthread_mutex_unlock(&philo->fork_r->mutex);
+	pthread_mutex_unlock(&philo->fork_l->mutex);
 }
 
 /**

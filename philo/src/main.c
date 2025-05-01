@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:32:34 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:28:46 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:31:18 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void printdebug(struct s_main *main)
     printf("Forks:\n");
     for (int i = 0; i < main->nb_philo; i++)
     {
-        printf("Fork %d: id = %d\n", i + 1, main->forks[i].id);
+        printf("Fork %d: id = %d, addr = %p\n", i + 1, main->forks[i].id, &main->forks[i].mutex);
     }
 }
 

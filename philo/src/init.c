@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:48:05 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:26:16 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:22:47 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main)
         philos[i].last_eat_time = main->start_time;
         philos[i].start_time = main->start_time;
         philos[i].fork_l = &forks[i];
-        if (i == 0)
-            philos[i].fork_r = &forks[main->nb_philo - 1];
+        if (i < main->nb_philo - 1)
+            philos[i].fork_r = &forks[i + 1];
         else
-            philos[i].fork_r = &forks[i - 1];
+            philos[i].fork_r = &forks[0];
         philos[i].lock_eat = &main->lock_eat;
         philos[i].lock_dead = &main->lock_dead;
         philos[i].lock_print = &main->lock_print;
