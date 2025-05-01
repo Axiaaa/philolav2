@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:17:54 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/01 14:44:40 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:12:14 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ long	gettime(int time_code, t_philo *philo)
  */
 void	ft_sleep(long time, t_philo *philo)
 {
-	long	start_time;
-
-	start_time = gettime(MILLISECOND, philo);
-	while (gettime(MILLISECOND, philo) - start_time < time)
+	time += gettime(MILLISECOND, philo);
+	while (gettime(MILLISECOND, philo) < time)
 	{
 		if (usleep(100) < 0)
 		{

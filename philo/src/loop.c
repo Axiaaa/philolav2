@@ -6,11 +6,12 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/01 14:44:47 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:36:39 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+#include <unistd.h>
 
 /**
  * @brief Function executed by the philosopher thread.
@@ -27,8 +28,8 @@ void	*main_loop(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	if (philo->id % 2 == 0)
-		ft_sleep(philo->time_to_eat / 2, philo);
+	if (philo->id % 2 == 1)
+		usleep(philo->time_to_eat / 2);
 	while (!is_dead(philo))
 	{
 		eat(philo);

@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:49:11 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/04/30 09:40:53 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:51:22 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_philo
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
+    int nbr_philo;
     
     long last_eat_time;
     long start_time;

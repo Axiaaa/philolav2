@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:48:05 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/01 12:22:47 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:51:59 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ bool init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main)
         philos[i].lock_eat = &main->lock_eat;
         philos[i].lock_dead = &main->lock_dead;
         philos[i].lock_print = &main->lock_print;
+        philos[i].nbr_philo = main->nb_philo;
         if (!mutex_init(philos))
             return false;
     }
