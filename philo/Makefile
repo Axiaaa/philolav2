@@ -29,6 +29,7 @@ ALL_SRC				= main.c \
 					monitor.c \
 					time.c \
 					utils.c \
+					forks.c \
 
 
 PREFIX_SRC			= $(addprefix $(SRC_DIR), $(ALL_SRC))
@@ -75,8 +76,15 @@ fclean : clean
 	rm -f $(NAME)
 	$(LOG__SUCCESS)
 
+fast : CFLAGS += -D FAST=1
+fast: re
+		$(call logs, $(GREEN),"Fast mode enabled")
 
-debug: CFLAGS += -D DEBUG=1 -g3 #-fsanitize=thread
+fast_debug : CFLAGS += -D FAST=1 -D DEBUG=1 -g3 -fsanitize=thread
+fast_debug: re
+		$(call logs, $(GREEN),"Fast mode enabled")
+
+debug: CFLAGS += -D DEBUG=1 -g3 -fsanitize=thread
 debug: re
 		$(call logs, $(GREEN),"Debug mode enabled")
 
@@ -85,3 +93,4 @@ re : fclean all
 
 
 .PHONY : all clean fclean re
+

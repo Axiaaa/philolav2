@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/01 15:36:39 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:40:29 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*main_loop(void *philo_ptr)
 
 	philo = (t_philo *)philo_ptr;
 	if (philo->id % 2 == 1)
-		usleep(philo->time_to_eat / 2);
+		ft_sleep(philo->time_to_eat / 2, philo);
 	while (!is_dead(philo))
 	{
 		eat(philo);

@@ -6,13 +6,14 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/01 15:53:10 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:01:42 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 #include <stdio.h>
 #include <unistd.h>
+
 /**
  * @brief Print philosopher activity.
  *
@@ -49,24 +50,6 @@ void	printfilo(int status, t_philo *philo)
 	pthread_mutex_unlock(philo->lock_print);
 }
 
-void taking_forks(t_philo *philo)
-{
-	if (philo->id % 2 == 0 && philo->id + 1 != philo->nbr_philo)
-	{
-		pthread_mutex_lock(&philo->fork_l->mutex);
-		printfilo(TAKE_FIRST_FORK, philo);
-		pthread_mutex_lock(&philo->fork_r->mutex);
-		printfilo(TAKE_SECOND_FORK, philo);
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->fork_r->mutex);
-		printfilo(TAKE_FIRST_FORK, philo);
-		pthread_mutex_lock(&philo->fork_l->mutex);
-		printfilo(TAKE_SECOND_FORK, philo);
-	}
-}
-
 /**
  * @brief Eat function for the philosopher.
  *
@@ -75,40 +58,17 @@ void taking_forks(t_philo *philo)
  * @details This function locks the right and left forks, updates the 
  * last eat time, increments the eat count, and sleeps for the time to eat.
  * 
- * @note The current implementation produces a warning with 
- * -fsanitize=thread even though no deadlock occurs at all.
- * An alternative implementation that avoids the warning (but is slower)
- * would lock forks in different orders based on philosopher IDs.
- * This alternative would cause the program to fail tests like :
- * "./philo 3 1000 333 333" or "./philo 5 610 200 200"
- * since it has to wait for the other philosopher to finish eating.
+ * @note More details about the fork acquisition strategy can be found in
+ * the forks.c file.
  *
- * @code
- * if (philo->id % 2 == 0)
- * {
- *   pthread_mutex_lock(&philo->fork_l->mutex);
- *   printfilo(TAKE_FIRST_FORK, philo);
- *   pthread_mutex_lock(&philo->fork_r->mutex);
- *   printfilo(TAKE_SECOND_FORK, philo);
- * }
- * else
- * {
- *   pthread_mutex_lock(&philo->fork_r->mutex);
- *   printfilo(TAKE_FIRST_FORK, philo);
- *   pthread_mutex_lock(&philo->fork_l->mutex);
- *   printfilo(TAKE_SECOND_FORK, philo);
- * }
- // pthread_mutex_lock(&philo->fork_r->mutex);
- // printfilo(TAKE_FIRST_FORK, philo);
- // pthread_mutex_lock(&philo->fork_l->mutex);
- // printfilo(TAKE_SECOND_FORK, philo);
- * 
  * @return None
 */
-
 void	eat(t_philo *philo)
 {
-	taking_forks(philo);
+	if (FAST)
+		fast_taking_forks(philo);
+	else
+		slow_taking_forks(philo);
 	printfilo(EATING, philo);
 	pthread_mutex_lock(philo->lock_eat);
 	philo->last_eat_time = gettime(MILLISECOND, philo);
