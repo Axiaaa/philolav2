@@ -6,12 +6,11 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 10:40:29 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:37:21 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-#include <unistd.h>
 
 /**
  * @brief Function executed by the philosopher thread.

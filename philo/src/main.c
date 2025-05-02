@@ -6,17 +6,23 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:32:34 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:21:48 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:55:01 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-
-#include <bits/pthreadtypes.h>
-#include <pthread.h>
-#include <stdbool.h>
 #include <stdio.h>
 
+/**
+ * @brief Print philosopher information.
+ *
+ * @param philo Pointer to the philosopher structure.
+ *
+ * @details This function prints the information of a philosopher.
+ * It is used for debugging purposes.
+ *
+ * @return None
+*/
 void	print_philo_info(t_philo *philo)
 {
 	printf("Philosopher %d:\n", philo->id);
@@ -34,6 +40,16 @@ void	print_philo_info(t_philo *philo)
 	printf("  - must_eat_count: %d\n", philo->must_eat_count);
 }
 
+/**
+ * @brief Print debug information.
+ *
+ * @param main Pointer to the main structure.
+ *
+ * @details This function prints debug information about the philosophers
+ * and forks. It is used for debugging purposes.
+ *
+ * @return None
+*/
 void	printdebug(struct s_main *main)
 {
 	int	i;
@@ -56,6 +72,15 @@ void	printdebug(struct s_main *main)
 	}
 }
 
+/**
+ * @brief Initialize all components of the program.
+ *
+ * @param main Pointer to the main structure.
+ * @param ac Number of arguments.
+ * @param av Array of arguments.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	init_everything(struct s_main *main, int ac, char **av)
 {
 	if (!init_main_struct(main, av)
@@ -68,6 +93,13 @@ bool	init_everything(struct s_main *main, int ac, char **av)
 	return (true);
 }
 
+/**
+ * @brief Start the dinner simulation.
+ *
+ * @param main Pointer to the main structure.
+ *
+ * @return true if the dinner started successfully, false otherwise.
+*/
 int	main(int ac, char **av)
 {
 	struct s_main	main;

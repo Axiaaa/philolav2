@@ -6,13 +6,19 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:16:48 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:07:24 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:53:03 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-#include <stdio.h>
 
+/**
+* @brief Check if the philosopher is dead.
+* 
+* @param philo Pointer to the philosopher structure.
+*
+* @return true if the philosopher is alive, false if dead.
+*/
 bool	check_death_time(t_philo *philo)
 {
 	pthread_mutex_lock(philo->lock_eat);
@@ -29,6 +35,14 @@ bool	check_death_time(t_philo *philo)
 	return (true);
 }
 
+/**
+* @brief Check if the philosopher is full.
+*
+* @param philo Pointer to the philosopher structure.
+* @param main Pointer to the main structure.
+*
+* @return true if the philosopher is not full, false if full.
+*/
 bool	check_philo_full(t_philo *philo, struct s_main *main)
 {
 	bool	is_full;
@@ -58,6 +72,16 @@ bool	check_philo_full(t_philo *philo, struct s_main *main)
 	return (true);
 }
 
+/**
+* @brief Monitor function to check the status of philosophers.
+*
+* @param main_ptr Pointer to the main structure.
+*
+* @details This function is executed by the monitor thread. It checks
+* if any philosopher has died or if all philosophers have eaten enough.
+* It runs in a loop until all philosophers are full or one of them dies.
+* @return NULL
+*/
 void	*monitor(void *main_ptr)
 {
 	struct s_main	*main;

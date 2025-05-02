@@ -6,13 +6,12 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:15:57 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:01:42 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:40:54 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 #include <stdio.h>
-#include <unistd.h>
 
 /**
  * @brief Print philosopher activity.

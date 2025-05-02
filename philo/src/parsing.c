@@ -6,15 +6,21 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 04:36:56 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:05:46 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:45:05 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 #include <limits.h>
 #include <stdio.h>
-#include <stdbool.h>
 
+/**
+ * @brief Check if the string is a number.
+ *
+ * @param str The string to check.
+ *
+ * @return true if the string is a number, false otherwise.
+*/
 bool	is_nbr(char *str)
 {
 	int	i;
@@ -30,6 +36,13 @@ bool	is_nbr(char *str)
 	return (true);
 }
 
+/**
+* @brief Convert a string to a long integer.
+*
+* @param str The string to convert.
+*
+* @return The converted long integer.
+*/
 long	strtolong(char *str)
 {
 	long	result;
@@ -45,6 +58,14 @@ long	strtolong(char *str)
 	return (result);
 }
 
+/**
+ * @brief Check if the input arguments are valid.
+ *
+ * @param ac The number of arguments.
+ * @param av The array of arguments.
+ *
+ * @return true if the arguments are valid, false otherwise.
+*/
 bool	parsing(int ac, char **av)
 {
 	int	i;

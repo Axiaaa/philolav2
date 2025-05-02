@@ -6,14 +6,19 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 10:48:05 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:22:40 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:00:58 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-#include <stdbool.h>
-#include <stdio.h>
 
+/**
+ * @brief Initialize mutexes for the philosopher.
+ *
+ * @param philo Pointer to the philosopher structure.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	mutex_init(t_philo *philo)
 {
 	if (pthread_mutex_init(philo->lock_eat, NULL) != 0)
@@ -25,6 +30,14 @@ bool	mutex_init(t_philo *philo)
 	return (true);
 }
 
+/**
+ * @brief Initialize the main structure.
+ *
+ * @param main Pointer to the main structure.
+ * @param av Array of arguments.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	init_main_struct(struct s_main *main, char **av)
 {
 	main->nb_philo = strtolong(av[1]);
@@ -40,6 +53,15 @@ bool	init_main_struct(struct s_main *main, char **av)
 	return (true);
 }
 
+/**
+ * @brief Initialize the philosophers.
+ *
+ * @param philos Pointer to the philosophers array.
+ * @param forks Pointer to the forks array.
+ * @param main Pointer to the main structure.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main)
 {
 	int	i;
@@ -69,6 +91,13 @@ bool	init_philosophers(t_philo *philos, t_fork *forks, struct s_main *main)
 	return (true);
 }
 
+/**
+ * @brief Initialize the forks.
+ *
+ * @param main Pointer to the main structure.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	init_forks(struct s_main *main)
 {
 	int	i;
@@ -83,6 +112,15 @@ bool	init_forks(struct s_main *main)
 	return (true);
 }
 
+/**
+ * @brief Initialize the parsing of arguments.
+ *
+ * @param main Pointer to the main structure.
+ * @param ac Number of arguments.
+ * @param av Array of arguments.
+ *
+ * @return true if initialization is successful, false otherwise.
+*/
 bool	init_parsing(struct s_main *main, int ac, char **av)
 {
 	int	i;
