@@ -14,6 +14,11 @@ PURPLE				= \033[0;35m
 CYAN				= \033[0;96m
 WHITE				= \033[0;37m
 
+define	logs
+	@printf "$(1)\r\t $(2) $(RESET)"
+endef
+
+LOG__ALLSUCCESS		= @printf "\033[1;92m\n\rALL DONE $(RESET)\n\n"
 
 #____________DIRECTORIES
 SRC_DIR				= src/
@@ -46,7 +51,6 @@ CFLAGS				= -Wextra -Wall -Werror -MMD -MP
 #________________________RULES
 
 all : $(NAME)
-	$(LOG__ALLSUCCESS)
 
 -include $(DEP)
 
@@ -59,22 +63,18 @@ $(NAME): $(DIRS) $(OBJ)
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	$(call logs, $(CYAN),"Compiling\ OBJ\ files")
 	$(CC) $(CFLAGS) -I$(HEAD_DIR) -c $< -o $@
-	$(LOG__SUCCESS)
 
 $(DIRS) :
 	$(call logs, $(CYAN),"Creating\ directories")
 	@mkdir -p $@
-	$(LOG__SUCCESS)
 
 clean : 
 	$(call logs, $(YELLOW),"Cleaning\ OBJ\ files")
 	rm -rf $(OBJ_DIR)
-	$(LOG__SUCCESS)
 
 fclean : clean
 	$(call logs, $(YELLOW),"Cleaning\ Executable")
 	rm -f $(NAME)
-	$(LOG__SUCCESS)
 
 fast : CFLAGS += -D FAST=1
 fast: re
@@ -88,6 +88,9 @@ debug: CFLAGS += -D DEBUG=1 -g3 -fsanitize=thread
 debug: re
 		$(call logs, $(GREEN),"Debug mode enabled")
 
+norm : 
+	$(call logs, $(CYAN),"Running\ Norminette")
+	norminette $(SRC_DIR) $(HEAD_DIR)
 
 re : fclean all
 
