@@ -59,7 +59,6 @@ $(NAME): $(DIRS) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -I$(HEAD_DIR) -o $(NAME)
 	$(LOG__SUCCESS)
 
-# Compile .o files, maintaining folder structure
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	$(call logs, $(CYAN),"Compiling\ OBJ\ files")
 	$(CC) $(CFLAGS) -I$(HEAD_DIR) -c $< -o $@

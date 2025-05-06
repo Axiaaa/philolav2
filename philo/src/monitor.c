@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:16:48 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:53:03 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:45:33 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,24 @@ bool	check_death_time(t_philo *philo)
 */
 bool	check_philo_full(t_philo *philo, struct s_main *main)
 {
-	bool	is_full;
-	bool	all_full;
-
 	pthread_mutex_lock(philo->lock_eat);
 	if (philo->eat_count >= philo->must_eat_count && !philo->is_full)
 	{
 		philo->is_full = true;
-		is_full = true;
-	}
-	pthread_mutex_unlock(philo->lock_eat);
-	if (is_full)
-	{
+		pthread_mutex_unlock(philo->lock_eat);
 		pthread_mutex_lock(&main->lock_dead);
-		main->nb_eat++;
-		all_full = (main->nb_eat == main->nb_philo);
-		pthread_mutex_unlock(&main->lock_dead);
-		if (all_full)
+		if (++main->nb_eat == main->nb_philo)
 		{
+			pthread_mutex_unlock(&main->lock_dead);
 			pthread_mutex_lock(philo->lock_dead);
 			*philo->is_dead = true;
 			pthread_mutex_unlock(philo->lock_dead);
 			return (false);
 		}
+		pthread_mutex_unlock(&main->lock_dead);
 	}
+	else
+		pthread_mutex_unlock(philo->lock_eat);
 	return (true);
 }
 
