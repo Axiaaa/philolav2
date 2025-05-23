@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/02 11:37:21 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/23 22:17:51 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,52 @@ void	*main_loop(void *philo_ptr)
  *
  * @return bool
 */
-bool	thread_join(struct s_main *main, pthread_t monitor_thread)
+bool	thread_join(struct s_main *main, pthread_t monitor_thread, int nb_philo)
 {
 	int	i;
+	bool return_val;
 
+	return_val = true;
 	i = 0;
-	while (i < main->nb_philo)
-	{
+	while (i < nb_philo)
+	{	
 		if (pthread_join(main->philos[i].thread, NULL) != 0)
-			return (false);
+		{
+			return_val = false;
+			break;
+		}
 		i++;
 	}
-	if (pthread_join(monitor_thread, NULL) != 0)
-		return (false);
-	return (true);
+	if (nb_philo > 1 && pthread_join(monitor_thread, NULL))
+		return_val = false;
+	return (return_val);
 }
+
+bool philo_create(struct s_main *main, int *philo_started, pthread_t* monitor_thread)
+{
+	bool return_val;
+
+	return_val = true;
+	while (*philo_started < main->nb_philo)
+	{
+		if (pthread_create(&main->philos[*philo_started].thread, NULL, main_loop,
+				&main->philos[*philo_started]) != 0)
+		{
+			set_dead(&main->philos[*philo_started]);
+			return_val = false;
+			(*philo_started)++;
+			break;
+		}
+		(*philo_started)++;
+	}
+	if (return_val != false && pthread_create(monitor_thread, NULL, monitor, main) != 0)
+	{
+		set_dead(&main->philos[0]);
+		return_val = false;
+	}
+	return (return_val);
+}
+
 
 /**
  * @brief This function is used to start the dinner.
@@ -77,29 +108,24 @@ bool	thread_join(struct s_main *main, pthread_t monitor_thread)
 */
 bool	start_dinner(struct s_main *main)
 {
-	int			i;
+	int			philo_started;
 	pthread_t	monitor_thread;
+	bool		return_val;
 
-	i = 0;
+	philo_started = 0;
+	return_val = true;
 	if (main->nb_philo == 1)
 	{
-		if (pthread_create(&main->philos[i].thread, NULL,
-				one_philo, &main->philos[i]) != 0)
-			return (false);
+		if (pthread_create(&main->philos[philo_started].thread, NULL,
+				one_philo, &main->philos[philo_started]) != 0)
+			return_val = false;
+		if (pthread_join(main->philos[philo_started].thread, NULL) != 0)
+			return_val = false;
+		return (return_val);
 	}
 	else
-	{
-		while (i < main->nb_philo)
-		{
-			if (pthread_create(&main->philos[i].thread, NULL, main_loop,
-					&main->philos[i]) != 0)
-				return (false);
-			i++;
-		}
-	}
-	if (pthread_create(&monitor_thread, NULL, monitor, main) != 0)
-		return (false);
-	if (!thread_join(main, monitor_thread))
-		return (false);
-	return (true);
+		return_val = philo_create(main, &philo_started, &monitor_thread);
+	if (!thread_join(main, monitor_thread, philo_started))
+		return_val = false;
+	return (return_val);
 }
