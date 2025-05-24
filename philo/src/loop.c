@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/23 22:17:51 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:39:02 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ bool	thread_join(struct s_main *main, pthread_t monitor_thread, int nb_philo)
 	return_val = true;
 	i = 0;
 	while (i < nb_philo)
-	{	
+	{
 		if (pthread_join(main->philos[i].thread, NULL) != 0)
 		{
 			return_val = false;
@@ -65,15 +65,16 @@ bool	thread_join(struct s_main *main, pthread_t monitor_thread, int nb_philo)
 		}
 		i++;
 	}
-	if (nb_philo > 1 && pthread_join(monitor_thread, NULL))
-		return_val = false;
+	if (nb_philo > 1 && monitor_thread != 0)
+		if (pthread_join(monitor_thread, NULL) != 0)
+			return_val = false;
 	return (return_val);
 }
 
 bool philo_create(struct s_main *main, int *philo_started, pthread_t* monitor_thread)
 {
 	bool return_val;
-
+	
 	return_val = true;
 	while (*philo_started < main->nb_philo)
 	{
@@ -82,7 +83,8 @@ bool philo_create(struct s_main *main, int *philo_started, pthread_t* monitor_th
 		{
 			set_dead(&main->philos[*philo_started]);
 			return_val = false;
-			(*philo_started)++;
+			if (*philo_started == 0)
+				(*philo_started)++;
 			break;
 		}
 		(*philo_started)++;
@@ -114,6 +116,7 @@ bool	start_dinner(struct s_main *main)
 
 	philo_started = 0;
 	return_val = true;
+	monitor_thread = 0;
 	if (main->nb_philo == 1)
 	{
 		if (pthread_create(&main->philos[philo_started].thread, NULL,
