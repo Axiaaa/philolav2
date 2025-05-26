@@ -6,7 +6,7 @@
 /*   By: lcamerly <lcamerly@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:58:30 by lcamerly          #+#    #+#             */
-/*   Updated: 2025/05/24 19:39:02 by lcamerly         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:43:54 by lcamerly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,7 @@ bool	thread_join(struct s_main *main, pthread_t monitor_thread, int nb_philo)
 	while (i < nb_philo)
 	{
 		if (pthread_join(main->philos[i].thread, NULL) != 0)
-		{
 			return_val = false;
-			break;
-		}
 		i++;
 	}
 	if (nb_philo > 1 && monitor_thread != 0)
